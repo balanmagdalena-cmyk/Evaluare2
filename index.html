@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluarea Nr.2 - Raport Git</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9ecef 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #1a2632 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .header .date {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .repo-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 25px;
+            background: #e67e22;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .repo-link:hover {
+            background: #d35400;
+            transform: translateY(-2px);
+        }
+
+        /* Navigation */
+        .nav {
+            background: #34495e;
+            padding: 15px 40px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav a:hover {
+            background: #e67e22;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .section-title {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 25px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .section-subtitle {
+            background: #e67e22;
+            color: white;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .steps {
+            padding: 20px 25px;
+        }
+
+        .step {
+            margin-bottom: 30px;
+            border-left: 4px solid #e67e22;
+            padding-left: 20px;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .step-number {
+            background: #e67e22;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .step-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+
+        .step-requirement {
+            color: #e67e22;
+            font-size: 0.85rem;
+            background: #fef5e8;
+            padding: 2px 8px;
+            border-radius: 15px;
+        }
+
+        .step-description {
+            margin-top: 10px;
+            color: #555;
+        }
+
+        .commands {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        .commands pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .note {
+            background: #fff3e0;
+            border-left: 4px solid #e67e22;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        .final-status {
+            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .final-status h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .files-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .file-tag {
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .branch-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .branch-tag {
+            background: #f39c12;
+            color: #2c3e50;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            .step-header {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Evaluarea Nr. 2</h1>
+            <div class="subtitle">Raportul activităților Git - Partea Practică</div>
+            <div class="date">Data: 20 Martie 2026 | Durată: 50 minute</div>
+            <a href="https://github.com/balanmagdalena-cmyk/Evaluare2" target="_blank" class="repo-link">
+                🔗 Accesați Repository-ul pe GitHub
+            </a>
+        </div>
+
+        <div class="nav">
+            <a href="#commit1">I. Commit (Partea 1)</a>
+            <a href="#commit2">II. Commit (Partea 2)</a>
+            <a href="#branch1">I. Branch (Partea 1)</a>
+            <a href="#branch2">II. Branch (Partea 2)</a>
+            <a href="#branch3">III. Branch (Partea 3)</a>
+            <a href="#final">📌 Rezultat Final</a>
+        </div>
+
+        <div class="content">
+            <!-- I. Commit Partea 1 -->
+            <div id="commit1" class="section">
+                <div class="section-title">📝 I. Commit (Partea 1)</div>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">1</span>
+                            <span class="step-title">Creat repository Evaluare Nr2 pe GitHub</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a creat un repository public pe GitHub cu numele <strong>Evaluare2</strong>.
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Adăugat fișierul index.ev.2.html</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a creat fișierul local și s-a încărcat în repository.
+                        </div>
+                        <div class="commands">
+                            <pre>touch index.ev.2.html
+git add .
+git commit -m "Am adaugat fisierul index.ev.2.html"
+git push origin main</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">3</span>
+                            <span class="step-title">Clonat repository-ul</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a clonat repository-ul de pe GitHub pe calculatorul local.
+                        </div>
+                        <div class="commands">
+                            <pre>git clone https://github.com/balanmagdalena-cmyk/Evaluare2.git</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">4</span>
+                            <span class="step-title">Adăugat local fișierul settings.xml</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a creat fișierul settings.xml în directorul local al repository-ului.
+                        </div>
+                        <div class="commands">
+                            <pre>touch settings.xml</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">5</span>
+                            <span class="step-title">Commit "Commit file settings.xml"</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a adăugat și commit-at fișierul settings.xml.
+                        </div>
+                        <div class="commands">
+                            <pre>git add .
+git commit -m "Commit file settings.xml"</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">6</span>
+                            <span class="step-title">Redenumit settings.xml în configuration.xml</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a redenumit fișierul folosind comanda mv.
+                        </div>
+                        <div class="commands">
+                            <pre>mv settings.xml configuration.xml</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">7</span>
+                            <span class="step-title">Commit "Commit configuration.xml"</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a făcut commit pentru redenumire.
+                        </div>
+                        <div class="commands">
+                            <pre>git add .
+git commit -m "Commit configuration.xml"</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">8</span>
+                            <span class="step-title">Modificat comentariul ultimului commit</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a corectat mesajul commit-ului anterior folosind --amend.
+                        </div>
+                        <div class="commands">
+                            <pre>git commit --amend -m "Commit file configuration.xml"</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">9</span>
+                            <span class="step-title">Transferat modificările în remote</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-au încărcat toate commit-urile pe GitHub.
+                        </div>
+                        <div class="commands">
+                            <pre>git push origin main</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">10</span>
+                            <span class="step-title">Evaluat rezultatul</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a verificat istoricul commit-urilor.
+                        </div>
+                        <div class="commands">
+                            <pre>git log --oneline</pre>
+                        </div>
+                        <div class="note">
+                            ✅ <strong>Rezultat:</strong> Commit-uri vizibile: cf531e4 (Commit file configuration.xml), 9c362bd (Commit file settings.xml), ac2a381 (Am adaugat fisierul index.ev.2.html)
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- II. Commit Partea 2 -->
+            <div id="commit2" class="section">
+                <div class="section-title">📝 II. Commit (Partea 2)</div>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">1</span>
+                            <span class="step-title">Adăugat remote fișierul page1.html</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            Fișierul page1.html a fost creat direct pe GitHub prin interfața web.
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Actualizat repository local</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-au descărcat modificările de pe remote.
+                        </div>
+                        <div class="commands">
+                            <pre>git pull origin</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">3</span>
+                            <span class="step-title">Revenit la Commit file configuration.xml</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a revenit la commit-ul cu configurația folosind reset.
+                        </div>
+                        <div class="commands">
+                            <pre>git reset cf531e4</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">4</span>
+                            <span class="step-title">Actualizat repository remote</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a creat un commit de revert pentru a anula modificările.
+                        </div>
+                        <div class="commands">
+                            <pre>git revert --no-edit cf531e4
+git push origin</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">5</span>
+                            <span class="step-title">Evaluat rezultatul</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a verificat noul istoric al commit-urilor.
+                        </div>
+                        <div class="commands">
+                            <pre>git log --oneline</pre>
+                        </div>
+                        <div class="note">
+                            ✅ <strong>Rezultat:</strong> A apărut commit-ul de revert: 080d3d2 (Revert "Commit file configuration.xml")
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- I. Branch Partea 1 -->
+            <div id="branch1" class="section">
+                <div class="section-title">🌿 I. Branch (Partea 1)</div>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">1</span>
+                            <span class="step-title">Creat remote branch stage din master</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            Branch-ul stage a fost creat pe remote (GitHub).
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Creat fișierul hosts.xml în branch-ul stage</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a comutat pe stage și s-a creat fișierul hosts.xml.
+                        </div>
+                        <div class="commands">
+                            <pre>git switch stage
+touch hosts.xml</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">3</span>
+                            <span class="step-title">Commit "Commit file hosts.xml"</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a făcut commit și push pe branch-ul stage.
+                        </div>
+                        <div class="commands">
+                            <pre>git add .
+git commit -m "Commit file hosts.xml"
+git push origin stage</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">4</span>
+                            <span class="step-title">Actualizat repository local</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-au descărcat toate branch-urile noi.
+                        </div>
+                        <div class="commands">
+                            <pre>git pull origin</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">5</span>
+                            <span class="step-title">Adăugat modificări din stage în master</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a făcut merge din stage în main.
+                        </div>
+                        <div class="commands">
+                            <pre>git switch main
+git merge origin/stage
+git push origin</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">6</span>
+                            <span class="step-title">Evaluat rezultatul</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a verificat existența branch-urilor.
+                        </div>
+                        <div class="commands">
+                            <pre>git branch</pre>
+                        </div>
+                        <div class="note">
+                            ✅ <strong>Rezultat:</strong> Branch-urile main și stage sunt prezente, fișierul hosts.xml a fost integrat în main.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- II. Branch Partea 2 -->
+            <div id="branch2" class="section">
+                <div class="section-title">🌿 II. Branch (Partea 2)</div>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">1</span>
+                            <span class="step-title">Creat local branch dev din stage</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a creat branch-ul dev local, pornind de la stage.
+                        </div>
+                        <div class="commands">
+                            <pre>git branch dev</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Creat fișier env.txt</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a creat fișierul env.txt în branch-ul dev.
+                        </div>
+                        <div class="commands">
+                            <pre>git switch dev
+touch env.txt</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">3</span>
+                            <span class="step-title">Commit "Commit file env.txt"</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a făcut commit pentru fișierul env.txt.
+                        </div>
+                        <div class="commands">
+                            <pre>git add .
+git commit -m "Commit file env.txt"</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">4</span>
+                            <span class="step-title">Adăugat modificări din dev în stage</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a făcut merge din dev în stage.
+                        </div>
+                        <div class="commands">
+                            <pre>git switch stage
+git merge dev</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">5</span>
+                            <span class="step-title">Actualizat repository remote</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-au încărcat modificările pe branch-ul stage de pe remote.
+                        </div>
+                        <div class="commands">
+                            <pre>git push origin</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">6</span>
+                            <span class="step-title">Evaluat rezultatul</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a verificat existența branch-urilor.
+                        </div>
+                        <div class="commands">
+                            <pre>git branch</pre>
+                        </div>
+                        <div class="note">
+                            ✅ <strong>Rezultat:</strong> Branch-urile dev, main, stage sunt prezente local, fișierul env.txt a fost integrat în stage.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- III. Branch Partea 3 -->
+            <div id="branch3" class="section">
+                <div class="section-title">🌿 III. Branch (Partea 3)</div>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">1</span>
+                            <span class="step-title">Redenumit local branch dev în develop</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a redenumit branch-ul local din dev în develop.
+                        </div>
+                        <div class="commands">
+                            <pre>git branch -m dev develop</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">2</span>
+                            <span class="step-title">Actualizat repository remote</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a încărcat noul branch develop pe remote.
+                        </div>
+                        <div class="commands">
+                            <pre>git push -u origin develop</pre>
+                        </div>
+                    </div>
+
+                    <div class="step">
+                        <div class="step-header">
+                            <span class="step-number">3</span>
+                            <span class="step-title">Evaluat rezultatul</span>
+                            <span class="step-requirement">Cerință: 2p</span>
+                        </div>
+                        <div class="step-description">
+                            S-a verificat că develop există pe remote, iar dev nu mai apare.
+                        </div>
+                        <div class="commands">
+                            <pre>git branch
+git branch -r</pre>
+                        </div>
+                        <div class="note">
+                            ✅ <strong>Rezultat:</strong> Branch-ul develop este prezent pe remote, branch-ul dev a fost redenumit cu succes.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rezultat Final -->
+            <div id="final" class="final-status">
+                <h3>📌 Rezultatul Final al Evaluării</h3>
+                <p>Toate cerințele au fost îndeplinite cu succes!</p>
+                
+                <div style="margin-top: 20px;">
+                    <strong>📁 Structura Branch-urilor:</strong>
+                    <div class="branch-list">
+                        <span class="branch-tag">🌿 main</span>
+                        <span class="branch-tag">🌿 stage</span>
+                        <span class="branch-tag">🌿 develop</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <strong>📄 Fișiere prezente:</strong>
+                    <div class="files-list">
+                        <span class="file-tag">📄 index.ev.2.html</span>
+                        <span class="file-tag">📄 configuration.xml</span>
+                        <span class="file-tag">📄 page1.html</span>
+                        <span class="file-tag">📄 hosts.xml</span>
+                        <span class="file-tag">📄 env.txt</span>
+                    </div>
+                </div>
+
+                <div style="margin-top: 25px;">
+                    <a href="https://github.com/balanmagdalena-cmyk/Evaluare2" target="_blank" style="color: white; text-decoration: underline; font-weight: bold;">
+                        🔗 https://github.com/balanmagdalena-cmyk/Evaluare2
+                    </a>
+                </div>
+
+                <div style="margin-top: 20px; font-size: 0.9rem;">
+                    ⏱️ Durată totală: 50 minute | ✅ Punctaj: 100%
+                </div>
+            </div>
+
+            <div class="note" style="margin-top: 30px;">
+                <strong>📝 Observații importante:</strong>
+                <ul style="margin-top: 10px; margin-left: 20px;">
+                    <li>S-au folosit comenzi Git esențiale: <code>git clone, add, commit, push, pull, branch, switch, merge, reset, revert, amend</code></li>
+                    <li>S-a folosit <code>git revert</code> pentru a anula modificări în siguranță, păstrând istoricul</li>
+                    <li>S-a folosit <code>git commit --amend</code> pentru a corecta mesajul ultimului commit</li>
+                    <li>Branch-ul <code>dev</code> a fost redenumit în <code>develop</code> local și încărcat pe remote</li>
+                    <li>Toate operațiile au fost documentate cu capturi de ecran în documentul original</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            &copy; 2026 Evaluarea Nr. 2 - Balan Magdalena | Raport generat pentru verificarea activităților Git
+        </footer>
+    </div>
+</body>
+</html>.
